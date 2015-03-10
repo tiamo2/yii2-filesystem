@@ -22,88 +22,88 @@ use yii\db\ActiveRecord;
  */
 class File extends ActiveRecord
 {
-    /**
-     * @var yii\base\Model
-     */
+	/**
+	 * @var yii\base\Model
+	 */
 	private $_owner = false;
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function __toString()
 	{
 		return $this->url;	
 	}
 
-    /**
-     * @inheritdoc
-     */
-    public static function fs()
+	/**
+	 * @inheritdoc
+	 */
+	public static function fs()
 	{
 		return Yii::$app->fs;
 	}
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%file}}';
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public static function tableName()
+	{
+		return '{{%file}}';
+	}
 
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => 'yii\behaviors\TimestampBehavior',
-                'value' => function () { return date("Y-m-d H:i:s"); },
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => 'created',
-                ],
-            ],
-        ];
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function behaviors()
+	{
+		return [
+			'timestamp' => [
+				'class' => 'yii\behaviors\TimestampBehavior',
+				'value' => function () { return date("Y-m-d H:i:s"); },
+				'attributes' => [
+					ActiveRecord::EVENT_BEFORE_INSERT => 'created',
+				],
+			],
+		];
+	}
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['size', 'owner_id'], 'integer'],
-            [['storage', 'extension'], 'string', 'max' => 10],
-            [['path', 'format', 'type', 'owner_model'], 'string', 'max' => 255],
-            [['hash'], 'string', 'max' => 32],
-            [['expired', 'created'], 'safe'],
-        ];
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function rules()
+	{
+		return [
+			[['size', 'owner_id'], 'integer'],
+			[['storage', 'extension'], 'string', 'max' => 10],
+			[['path', 'format', 'type', 'owner_model'], 'string', 'max' => 255],
+			[['hash'], 'string', 'max' => 32],
+			[['expired', 'created'], 'safe'],
+		];
+	}
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'fs' => 'Filesystem',
-            'path' => 'Path',
-            'extension' => 'Extension',
-            'type' => 'Type',
-            'size' => 'Size',
-            'hash' => 'Hash',
-            'owner_model' => 'Owner',
-            'owner_id' => 'Owner id',
-            'expired' => 'Expired',
-            'created' => 'Created',
-        ];
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function attributeLabels()
+	{
+		return [
+			'id' => 'ID',
+			'fs' => 'Filesystem',
+			'path' => 'Path',
+			'extension' => 'Extension',
+			'type' => 'Type',
+			'size' => 'Size',
+			'hash' => 'Hash',
+			'owner_model' => 'Owner',
+			'owner_id' => 'Owner id',
+			'expired' => 'Expired',
+			'created' => 'Created',
+		];
+	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function setOwner($owner)
 	{
 		if (!empty($owner)) {
@@ -113,9 +113,9 @@ class File extends ActiveRecord
 		}
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function getOwner()
 	{
 		if ($this->_owner===false && $this->owner_model && $this->owner_id) {
@@ -127,17 +127,17 @@ class File extends ActiveRecord
 		return $this->_owner;
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function getName()
 	{
 		return basename($this->path);
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function getUrl($prefix=null)
 	{
 		$fs = static::fs();
@@ -150,9 +150,9 @@ class File extends ActiveRecord
 		return $baseUrl .'/'. $this->format($prefix)->getPath($prefix);
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function getPath($prefix=null)
 	{
 		if ($prefix) {
@@ -161,123 +161,123 @@ class File extends ActiveRecord
 		return dirname($this->path) .'/'. $prefix . $this->name;
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function getFsPath($prefix=null)
 	{
 		return $this->fs . '://' . $this->getPath($prefix);
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function getFsDir()
 	{
 		return $this->fs . '://' . dirname($this->path);
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function getFs()
 	{
 		return $this->storage ? $this->storage : 'local';
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function getTempHash()
 	{
 		return md5($this->created);
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function getIsImage()
 	{
 		return substr($this->type,0,5) === 'image';
 	}
 
-    /**
-     * @inheritdoc
-     */
-    public function getTimestamp()
+	/**
+	 * @inheritdoc
+	 */
+	public function getTimestamp()
 	{
 		return static::fs()->getTimestamp($this->fsPath);
 	}
 
-    /**
-     * @inheritdoc
-     */
-    public function getMetadata()
+	/**
+	 * @inheritdoc
+	 */
+	public function getMetadata()
 	{
 		return static::fs()->getMetadata($this->fsPath);
 	}
 
-    /**
-     * @inheritdoc
-     */
-    public function getVisibility()
+	/**
+	 * @inheritdoc
+	 */
+	public function getVisibility()
 	{
 		return static::fs()->getVisibility($this->fsPath);
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function read()
 	{
 		return static::fs()->read($this->fsPath);
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function readStream()
 	{
 		return static::fs()->readStream($this->fsPath);
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function write($contents, array $config = [])
 	{
 		return static::fs()->write($this->fsPath, $contents, $config);
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function writeStream($resource, array $config = [])
 	{
 		return static::fs()->writeStream($this->fsPath, $resource, $config);
 	}
 
-    /**
-     * @inheritdoc
-     */
-    public function copy($newpath)
+	/**
+	 * @inheritdoc
+	 */
+	public function copy($newpath)
 	{
 		return static::fs()->copy($this->fsPath, $newpath);
 	}
 
-    /**
-     * @inheritdoc
-     */
-    public function move($newpath)
+	/**
+	 * @inheritdoc
+	 */
+	public function move($newpath)
 	{
 		return static::fs()->move($this->fsPath, $newpath);
 	}
 
-    /**
-     * @inheritdoc
-     */
-    public function format($prefix)
-    {
+	/**
+	 * @inheritdoc
+	 */
+	public function format($prefix)
+	{
 		if ($prefix) {
 			$fs = static::fs();
 			$formats = explode(',', $this->format);
@@ -295,11 +295,11 @@ class File extends ActiveRecord
 			}
 		}
 		return $this;
-    }
+	}
 
 	/**
-     * @inheritdoc
-     */
+	 * @inheritdoc
+	 */
 	public function afterDelete()
 	{
 		if (!empty($this->path)) {
@@ -308,9 +308,9 @@ class File extends ActiveRecord
 		parent::afterDelete();
 	}
 
-    /**
-     * @inheritdoc
-     */
+	/**
+	 * @inheritdoc
+	 */
 	public function afterSave($insert, $changedAttributes)
 	{
 		// update owner counters
