@@ -14,10 +14,5 @@
         "yiisoft/yii2": "*",
         "yiisoft/yii2-imagine": "*",
         "league/flysystem": "~1.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "tiamo\\filesystem\\": ""
-        }
     }
 }

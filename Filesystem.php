@@ -1,6 +1,6 @@
 <?php
 
-namespace tiamo\filesystem;
+namespace tiamo\yii2-filesystem;
 
 use Yii;
 use yii\helpers\Url;
