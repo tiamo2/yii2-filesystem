@@ -8,7 +8,7 @@ use yii\base\InvalidConfigException;
 
 class Filesystem extends \yii\base\Component
 {
-	public $fileClass = 'File';
+	public $fileClass = __NAMESPACE__ . '\File';
 	public $basePath = '@webroot/files';
 	public $baseUrl = '@web/files';
 	public $defaultStorage = 'local';

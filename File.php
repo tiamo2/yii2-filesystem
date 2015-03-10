@@ -3,7 +3,7 @@
 namespace tiamo\filesystem;
 
 use Yii;
-use yii\web\ActiveRecord;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "storage".
