@@ -12,17 +12,10 @@ class Filesystem extends \yii\base\Component
     public $basePath = '@webroot/files';
     public $baseUrl = '@web/files';
     public $defaultStorage = 'local';
-	/**
-	 * Storage collections
-	 * @var array
-	 */
     public $storage = [];
-	/**
-	 * Format collections
-	 * @var array
-	 */
     public $formats = [];
     public $adaptersMap = [];
+
 	protected $defaultAdaptersMap = [
 		'local' => [
 			'class' => 'League\Flysystem\Adapter\Local',
@@ -64,7 +57,7 @@ class Filesystem extends \yii\base\Component
 			'required' => ['baseUri']
 		],
 	];
-	
+
 	private $_mountManager;
 
     public function init()
@@ -99,10 +92,8 @@ class Filesystem extends \yii\base\Component
 		if (!isset($this->adaptersMap[$name])) {
 			throw new \Exception(sprintf('Unknown adapter "%s".', $name));
 		}
-		
 		$adapter = $this->adaptersMap[$name];
 		$class = $adapter['class'];
-		
 		// check required properties
 		if (!empty($adapter['required'])) {
 			foreach($adapter['required'] as $prop) {
@@ -111,7 +102,6 @@ class Filesystem extends \yii\base\Component
 				}
 			}
 		}
-		
 		switch($name) {
 			case('local'):
 				return Yii::createObject($class, [$this->basePath]);
@@ -231,12 +221,12 @@ class Filesystem extends \yii\base\Component
     }
 
 	/**
-     * @param File $file
-     * @param mixed $handler
-     * @param array $params
-     * @param string $prefix
-     * @return boolean New file exists ?
-     */
+	 * @param File $file
+	 * @param mixed $handler
+	 * @param array $params
+	 * @param string $prefix
+	 * @return boolean New file exists ?
+	 */
 	public function process($file, $handler, array $params=array(), $prefix=null)
 	{
 		$path = $file->getFsPath($prefix);
@@ -257,21 +247,21 @@ class Filesystem extends \yii\base\Component
 		return $this->has($path);
 	}
 
-    /**
-     * @param string $id
+	/**
+	 * @param string $id
      * @param string $name
-     * @return string
-     */
+	 * @return string
+	 */
 	public static function generatePath($id, $name)
 	{
 		return implode('/', [intval($id/10000), intval($id/1000), $id, $name]);
 	}
 
-    /**
-     * @param string $method
+	/**
+	 * @param string $method
      * @param array $parameters
-     * @return mixed
-     */
+	 * @return mixed
+	 */
     public function __call($method, $parameters)
     {
         return call_user_func_array([$this->_mountManager, $method], $parameters);
