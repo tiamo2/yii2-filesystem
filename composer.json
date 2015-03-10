@@ -2,8 +2,8 @@
     "name": "tiamo/yii2-filesystem",
     "description": "Yii2 filesystem",
     "type": "yii2-extension",
-    "keywords": ["flysystem","filesystem","file","storage"],
-    "license": "MIT",
+    "keywords": ["filesystem","file","flysystem","storage"],
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Vladislav Kornienko",
@@ -14,5 +14,10 @@
         "yiisoft/yii2": "*",
         "yiisoft/yii2-imagine": "*",
         "league/flysystem": "~1.0"
+    },
+    "autoload": {
+		"psr-4": {
+			"tiamo\\filesystem\\": "."
+		}
     }
 }
