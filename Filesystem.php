@@ -8,13 +8,13 @@ use yii\base\InvalidConfigException;
 
 class Filesystem extends \yii\base\Component
 {
-    public $fileClass = 'File';
-    public $basePath = '@webroot/files';
-    public $baseUrl = '@web/files';
-    public $defaultStorage = 'local';
-    public $storage = [];
-    public $formats = [];
-    public $adaptersMap = [];
+	public $fileClass = 'File';
+	public $basePath = '@webroot/files';
+	public $baseUrl = '@web/files';
+	public $defaultStorage = 'local';
+	public $storage = [];
+	public $formats = [];
+	public $adaptersMap = [];
 
 	protected $defaultAdaptersMap = [
 		'local' => [
@@ -60,8 +60,8 @@ class Filesystem extends \yii\base\Component
 
 	private $_mountManager;
 
-    public function init()
-    {
+	public function init()
+	{
 		$this->adaptersMap = array_merge($this->defaultAdaptersMap, $this->adaptersMap);
 		$this->basePath = Yii::getAlias($this->basePath);
 		$this->baseUrl = Yii::getAlias($this->baseUrl);
@@ -80,15 +80,15 @@ class Filesystem extends \yii\base\Component
 			]);
 		}
 		$this->_mountManager = Yii::createObject('League\Flysystem\MountManager', [$filesystems]);
-    }
+	}
 
-    /**
-     * @param string $name
-     * @param array $config
-     * @return League\Flysystem\Adapter\AbstractAdapter
-     */
-    protected function prepareAdapter($name, $config)
-    {
+	/**
+	 * @param string $name
+	 * @param array $config
+	 * @return League\Flysystem\Adapter\AbstractAdapter
+	 */
+	protected function prepareAdapter($name, $config)
+	{
 		if (!isset($this->adaptersMap[$name])) {
 			throw new \Exception(sprintf('Unknown adapter "%s".', $name));
 		}
@@ -177,14 +177,14 @@ class Filesystem extends \yii\base\Component
 		return Yii::createObject($class, [$config]);
 	}
 
-    /**
-     * @param UploadedFile $file
-     * @param ActiveRecord|array $owner
-     * @param string $fs
-     * @return File object
-     */
-    public function store($file, $owner=null, $fs=null)
-    {
+	/**
+	 * @param UploadedFile $file
+	 * @param ActiveRecord|array $owner
+	 * @param string $fs
+	 * @return File object
+	 */
+	public function store($file, $owner=null, $fs=null)
+	{
 		if (!empty($file) && !$file->hasError) {
 			
 			$model = Yii::createObject($this->fileClass);
@@ -218,7 +218,7 @@ class Filesystem extends \yii\base\Component
 			}
 			return $model;
 		}
-    }
+	}
 
 	/**
 	 * @param File $file
@@ -249,7 +249,7 @@ class Filesystem extends \yii\base\Component
 
 	/**
 	 * @param string $id
-     * @param string $name
+	 * @param string $name
 	 * @return string
 	 */
 	public static function generatePath($id, $name)
@@ -259,11 +259,11 @@ class Filesystem extends \yii\base\Component
 
 	/**
 	 * @param string $method
-     * @param array $parameters
+	 * @param array $parameters
 	 * @return mixed
 	 */
-    public function __call($method, $parameters)
-    {
-        return call_user_func_array([$this->_mountManager, $method], $parameters);
-    }
+	public function __call($method, $parameters)
+	{
+		return call_user_func_array([$this->_mountManager, $method], $parameters);
+	}
 }
